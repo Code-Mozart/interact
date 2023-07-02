@@ -31,19 +31,38 @@ module Interact
       end
 
       def build(x:, y:, width:, height:)
+        super
+
         text_primitive.text = content
-        text_primitive.x = x
-        text_primitive.y = y
+
+        text_width = text_primitive.width
+        text_height = text_primitive.height
+
+        text_primitive.x = x + offset_for_alignment(horizontal_alignment, width, text_width)
+        text_primitive.y = y + offset_for_alignment(vertical_alignment, height, text_height)
       end
 
-      def to_tree
-        super.merge(
+      def to_tree(**options)
+        super(**options).merge(
           content: @content,
           horizontal_alignment: @horizontal_alignment,
           vertical_alignment: @vertical_alignment,
           font_size: @font_size,
           size_when_fit: size_when_fit
         )
+      end
+
+      protected
+
+      def validate_options(options)
+        super
+        validate_alignment_options options
+      end
+
+      def validate_alignment_options(options)
+        [:horizontal_alignment, :vertical_alignment].each do |alignment_option|
+          ensure_valid_alignment options.send(alignment_option), alignment_option
+        end
       end
 
       private
