@@ -15,9 +15,9 @@ module Interact
         child.build x: 0, y: 0, width: Window.width, height: Window.height
       end
 
-      def to_tree
-        super.merge(
-          child: child
+      def to_tree(**options)
+        super(**options).merge(
+          child: child.to_tree(inherited_desired_width: :expand, inherited_desired_height: :expand)
         )
       end
 

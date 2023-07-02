@@ -42,12 +42,11 @@ module Interact
         start_y = padding.north
         if alignment == :center
           start_x += remaining_width / 2.0
-          start_y += remaining_height / 2.0
         elsif alignment == :end
           start_x += remaining_width
-          start_y += remaining_height
         end
-        build_children start_x, start_y, expand_width, height - (padding.north - padding.south)
+
+        build_children start_x, start_y, expand_width, height - (padding.north + padding.south)
       end
 
       private
@@ -55,7 +54,17 @@ module Interact
       def build_children(start_x, start_y, expand_width, expand_height)
         current_x = start_x
         children.each do |child|
-          current_x += build_child(child, current_x, start_y, expand_width, expand_height)[0]
+          case child.alignment_in_container
+          when :start
+            start_y
+          when :center
+            expand_height - start_y
+          end
+
+          current_x += build_child(child, current_x, start_y, expand_width, expand_height) { |_, child_height|
+            y_offset = offset_for_alignment child.alignment_in_container, expand_height, child_height
+            { y: start_y + y_offset }
+          }[0]
           current_x += gap_between_children
         end
       end
@@ -77,7 +86,7 @@ module Interact
       def min_height
         [
           size_when_fit[1],
-          (children.select { |child| child.desired_height.is_a? Numeric }.map(&:desired_width).max || 0)
+          (children.select { |child| child.desired_height.is_a? Numeric }.map(&:desired_height).max || 0)
         ].max
       end
 

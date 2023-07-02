@@ -20,9 +20,12 @@ module Interact
         @gap_between_children = options.gap_between_children
       end
 
-      def to_tree
-        super.merge(
-          children: children.map(&:to_tree),
+      def to_tree(**options)
+        super(**options).merge(
+          children: children.map { |child|
+            child.to_tree inherited_desired_width: default_child_width,
+                          inherited_desired_height: default_child_height
+          },
           alignment: alignment,
           default_child_width: default_child_width,
           default_child_height: default_child_height,
@@ -41,14 +44,14 @@ module Interact
 
       protected
 
-      def build_child(child, x, y, expand_width, expand_height)
+      def build_child(child, x, y, expand_width, expand_height, &_)
         case (desired_child_width = desired_child_width(child))
         when :fit
           child_width = child.size_when_fit[0]
         when :expand
           child_width = expand_width
         when Numeric
-          child_width = desired_child_width
+          child_width = [desired_child_width, expand_width].min
         else
           raise ArgumentError, "Desired width of '#{desired_child_width}' not supported"
         end
@@ -59,12 +62,14 @@ module Interact
         when :expand
           child_height = expand_height
         when Numeric
-          child_height = desired_child_height
+          child_height = [desired_child_height, expand_height].min
         else
           raise ArgumentError, "Desired height of '#{desired_child_height}' not supported"
         end
 
-        child.build x: x, y: y, width: child_width, height: child_height
+        build_options = { x: x, y: y, width: child_width, height: child_height }
+        build_options.merge! yield(child_width, child_height) if block_given?
+        child.build **build_options
         [child_width, child_height]
       end
 
@@ -74,7 +79,7 @@ module Interact
 
       def validate_options(options)
         super
-        ensure_enum options.alignment, :alignment, [:start, :center, :end]
+        ensure_valid_alignment options.alignment, :alignment
         ensure_enum_or_numeric options.default_child_width, :default_child_width, [:fit, :expand]
         ensure_enum_or_numeric options.default_child_height, :default_child_height, [:fit, :expand]
       end
