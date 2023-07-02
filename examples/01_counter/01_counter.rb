@@ -6,6 +6,6 @@ Interact::Application.new(
   title: '01 Counter'
 ) do
   row do
-    button text: 'Click me'
+    button 'Click me'
   end
 end
