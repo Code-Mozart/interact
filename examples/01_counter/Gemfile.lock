@@ -1,0 +1,20 @@
+GIT
+  remote: https://github.com/Code-Mozart/interact
+  revision: 371836b283eb91dad1af89479fbf79adab674ea7
+  specs:
+    interact (0.1.0)
+      ruby2d
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ruby2d (0.12.1)
+
+PLATFORMS
+  x86_64-darwin-22
+
+DEPENDENCIES
+  interact!
+
+BUNDLED WITH
+   2.4.15
