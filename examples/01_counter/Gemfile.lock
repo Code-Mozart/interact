@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Code-Mozart/interact
-  revision: 4cefaa9d9123a3fd755c97ff2627fab19a5387d2
+  revision: 03e4c3e20194ac93dda3a759a9b5821d2ef7a219
   specs:
     interact (0.1.0)
       ruby2d

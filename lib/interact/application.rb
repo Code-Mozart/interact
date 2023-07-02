@@ -4,6 +4,8 @@ require 'ruby2d'
 
 module Interact
   class Application
+    include ::Ruby2D::DSL
+
     attr_reader :width, :height, :resizable, :title, :theme
 
     def initialize(
@@ -23,14 +25,15 @@ module Interact
       )
       @theme = theme
 
-      ruby2d_window = ::Ruby2D::Window.new(title: title, width: width, height: height)
-      ruby2d_window.set(resizable: resizable, background: '#F8F8F8')
+      ::Ruby2D::DSL.window = ::Ruby2D::Window.new(title: title, width: width, height: height)
+      self.set(resizable: resizable, background: '#888888')
 
       @root = ::Interact::Components::Root.new
       @root.instance_eval &block
       @root.build
+      puts JSON.pretty_generate @root.to_tree
 
-      ruby2d_window.show
+      self.show
     end
   end
 end

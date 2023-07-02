@@ -15,6 +15,12 @@ module Interact
         child.build x: 0, y: 0, width: Window.width, height: Window.height
       end
 
+      def to_tree
+        super.merge(
+          child: child
+        )
+      end
+
       def children
         Struct.new(:root) {
           def <<(arg)
