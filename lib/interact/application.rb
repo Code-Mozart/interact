@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'ruby2d'
+
 module Interact
   class Application
     attr_reader :width, :height, :resizable, :title, :theme
