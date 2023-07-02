@@ -3,3 +3,4 @@
 source "https://rubygems.org"
 
 gem 'interact', git: 'https://github.com/Code-Mozart/interact'
+# gem 'interact', path: './../..'
