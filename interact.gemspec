@@ -3,7 +3,7 @@
 require_relative 'lib/interact/version'
 
 Gem::Specification.new do |spec|
-  spec.name = 'Interact'
+  spec.name = 'interact'
   spec.version = Interact::VERSION
   spec.authors = ['Codemozart']
   spec.email = ['thecodemozart@gmail.com']
