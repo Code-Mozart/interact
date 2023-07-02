@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'ruby2d'
-
 module Interact
   class Application
     attr_reader :width, :height, :resizable, :title, :theme
@@ -23,11 +21,15 @@ module Interact
       )
       @theme = theme
 
+      require 'ruby2d'
+
       set width: width, height: height, resizable: resizable, title: title, background: '#F8F8F8'
 
       @root = ::Interact::Components::Root.new
       @root.instance_eval &block
       @root.build
+
+      show
     end
   end
 end
