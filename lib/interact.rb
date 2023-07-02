@@ -5,6 +5,7 @@ module Interact
 
   autoload :VERSION, "#{Interact.dir}/version"
 
+  autoload :Application, "#{Interact.dir}/application"
   autoload :GUI, "#{Interact.dir}/gui"
 
   module Components
